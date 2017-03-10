@@ -2,30 +2,39 @@ import tkinter as tk
 from PIL import Image
 import rethinkdb as r
 from tkinter import messagebox
+import threading
 
 class Client(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
+
         self.f1 = tk.Frame(self)
-        self.f2 = tk.Frame(self)
+        self.f2 = tk.Frame(self, height = 443)
 
         self.bckg_img = tk.PhotoImage(file="blueprint.gif")
         self.canvas = tk.Canvas(self.f1, width=390, height=440, bd = 3, bg = 'black')
         self.draw_BP(self.canvas)
 
-        self.f1.pack()
+        self.f1.grid(row = 0, column = 0)
         self.pack()
 
+        l1 = tk.Label(self.f2, text = 'Filter')
+        l1.grid(row = 0, column = 0)
+
+        self.f2.grid(row = 0, column = 1, sticky = 'n')
+
+        t = threading.Thread(target = self.connect)
+        t.setDaemon(True)
+        t.start()
+
+
+    def connect(self):
         try:
             r.connect( "localhost", 28015)
+            self.refresh_objects()
         except r.ReqlDriverError as e:
             self.db_exception_handler()
 
-        l1 = tk.Label(f2,'Filter')
-        self.refresh_objects()
-
-        self.f2.pack()
-        self.pack()
 
     def draw_BP(self,canvas):
         canvas.create_image(198, 224, image=self.bckg_img)
@@ -38,13 +47,13 @@ class Client(tk.Frame):
             except r.ReqlDriverError as e:
                 self.db_exception_handler()
         else:
-            try:
-                root.destroy()
-            except:
-                pass 
+            threading.main_thread().destroy()
 
-    def refresh_objects():
+    def set_query(self):
         self.objects = r.table("objects").changes().run()
+
+    def refresh_objects(self):
+        set_query()
         for object in objects:
             print(object)
 
