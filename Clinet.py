@@ -22,85 +22,56 @@ class Client(tk.Frame):
         '''
         l1 = tk.Label(self.f2, text = 'Filter')
         l1.grid(row = 0, column = 0)
-		'''
+        '''
         self.f2.grid(row = 0, column = 1, sticky = 'n')
         #Chack for database connection
         t = threading.Thread(target = self.connect)
         t.setDaemon(True)
         t.start()
-        #Get Data     
-        try:
-            #self.types = r.table("objects").with_fields('type').distinct(index = 'type')changes().run(self.db)
-            self.objects = r.table("objects").changes().run(self.db)
-        except r.ReqlDriverError as e:
-            t = threading.Thread(target = self.db_exception_handler)
-            t.setDaemon(True)
-            t.start()
-            
-        print(type(self.objects))
-        #set filter gui
-        '''
-        self.f3 = tk.Frame(self.f2)
-        self.f3.grid(row = 0, column = 1)
-        self.types_checkbox = [];
-        self.filter = [];
-        generate_types_checkbox()
-        '''
-	'''
-    def generate_types_checkbox():
-        for tc in self.types_checkbox:
-            tc.pack_forget()
-            del tc
-        self.type_c_value = []
-        for tc in range(0, length(types)):
-            v = IntVar()
-            c = tk.Checkbutton(self.f3, text = tc, command = self.set_filter, variable = v)
-            c.select()
-            c.pack(side = 'right')
-            self.types_checkbox.append(c)
-            self.type_c_value.append(v)
-	'''
+
     def connect(self):
         try:
-            self.db = r.connect( "localhost", 28015)
-            self.refresh_objects()
+            self.db = r.connect( "localhost", 28015).repl()
         except r.ReqlDriverError as e:
             self.db_exception_handler()
+            return
+        self.run()
 
     def db_exception_handler(self):
         if(tk.messagebox.askretrycancel('ERROR','ERROR: Unable to connect to the database.')):
-            try:
-                r.connect( "localhost", 28015)
-            except r.ReqlDriverError as e:
-                self.db_exception_handler()
+            self.connect()
         else:
             self.master.event_generate("<<CancelEvent>>", when = "tail")
             
     def draw_BP(self,canvas):
         canvas.create_image(198, 224, image=self.bckg_img)
         canvas.pack(fill = 'both')
-	'''
-    def set_filter():
-        for i in range(0,length(self.types_checkbox)):
-            if(self.type_c_value[i]){
-                self.filter.append(self.types_checkbox(i).getText())
-            }
-	
-    def set_query(self):
+    '''
+    def refresh_objects(self):
+        for object in self.objects:
+            draw_Circle(object[cordinates][0],object[cordinates][1])
+    '''   
+    def draw_Circle(self, x, y):
+        self.canves.create_circle(x, y, 10)
+
+    def refresh_objects(self):        
         try:
-            self.objects = r.table("objects").filter(r.row["type"] in self.filter).changes().run(self.db)
+            self.objects = r.db('IoT').table('objects').run()
         except r.ReqlDriverError as e:
             t = threading.Thread(target = self.db_exception_handler)
             t.setDaemon(True)
             t.start()
-	'''
-    def refresh_objects(self):
-        #set_query() 
+            return 1
+        return 0
+
+    def run(self):
+        if(self.refresh_objects()): return
+        print(type(self.objects))
         for object in self.objects:
-            draw_Circle(object[cordinates][0],object[cordinates][1])
-           
-    def draw_Circle(self, x, y):
-		self.canves.create_circle(x, y, 10)
+           print(object)
+        self.objects = r.db('IoT').table('objects').changes().filter(lambda change: change['new_val']).run()        
+        for object in self.objects:
+           print(object)
 
 def main():
     root = tk.Tk()
