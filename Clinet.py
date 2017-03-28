@@ -69,7 +69,7 @@ class Client(tk.Frame):
         print(type(self.objects))
         for object in self.objects:
            print(object)
-        self.objects = r.db('IoT').table('objects').changes().filter(lambda change: change['new_val']).run()        
+        self.objects = r.db('IoT').table('objects').changes().run()        
         for object in self.objects:
            print(object)
 
