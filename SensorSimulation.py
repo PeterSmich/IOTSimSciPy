@@ -1,16 +1,15 @@
 import tkinter as tk
 from tkinter import messagebox
+from functools import partial
 
 class Obj:
 	"""docstring for Obj"""
-	poz_x = -1
-	poz_y = -1
-	name = "Kecske"
+	poz_x = None
+	poz_y = None
+	name = None
 	circle = None
 	button = None
-	colour = 'Red'
-	def __init__(self, x, y, name, circle, button, color):
-		print("kecske")
+	colour = None
 
 	def __init__(self, name, i):
 		self.name = name
@@ -68,7 +67,7 @@ class Window(tk.Frame):
 	objects_button = []
 	objects = []
 	types = ('Glass', 'Key', 'Phone', 'Pen')
-	selected_object = None;
+	selected_object = -1;
 
 	app = App()
 
@@ -82,6 +81,8 @@ class Window(tk.Frame):
 		self.f1 = tk.Frame(self, bg = 'dark slate gray', bd = 5)
 		f2 = tk.Frame(self, bg = 'dark slate gray', bd = 1, pady = 1)
 		self.f2 = tk.Frame(f2, bg = 'gray16', bd = 1, pady = 1)
+		f3 = tk.Frame(self, bg = 'dark slate gray', bd = 1, pady = 1)
+		self.f3 = tk.Frame(f3, bg = 'gray16', bd = 1, pady = 1)
 		
 		#Set blueprint image
 		self.bckg_img = tk.PhotoImage(file="blueprint.gif")
@@ -94,31 +95,45 @@ class Window(tk.Frame):
 		#Set controls options eg. filters
 		tk.Label(self.f2, text = 'Filter:', bg = 'gray16', fg = 'white', anchor = 'w').pack(fill = 'x')
 		for i in range(0,4):
+			helper = partial(self.select_Object, i)
 			self.objects[i].button = tk.Button(self.f2, text = self.objects[i].name, \
-				bg = self.objects[i].colour, width = 10, command = self.select_Object(i))
+				bg = self.objects[i].colour, width = 10, command = helper)
 			self.objects[i].button.pack(padx = 2, pady = 0)
-		
 
+		deselect_button = tk.Button(self.f3, text = 'Deselect', width = 10, command = self.Deselect)
+		deselect_button.pack(padx = 2, pady = 0)
+		
 		tk.Label(f2, text = 'IoT indoor positioning system for disabled people', \
 			bg = 'dark slate gray', fg = 'white', anchor = 'w', wraplength = 100, bd = 5).grid(row = 0, column = 0)
 		self.f2.grid(row = 1, column = 0)
 		f2.pack(padx = 5)
+
+		self.f3.grid(row = 2, column = 0)
+		f3.pack(padx = 5)
+
 		self.pack()
 
 	def draw_BP(self,canv):
 		canv.create_image(198, 224, image=self.bckg_img)
 		canv.pack(fill = 'both')
 
-	def set_changes(self):
-		self.changes = True
+	def Deselect(self):
+		self.selected_object = -1;
 
-	def select_Object(self, i):
+	def select_Object(self, i):	
+		if self.selected_object != -1:
+			self.objects[self.selected_object].button.config(state = 'normal');
 		self.selected_object = i
-		print(self.selected_object)
+		self.objects[i].button.config(state = 'disabled');
 
 	def draw_Circle(self,event):
-		self.objects[self.selected_object].circle = self.canvas.create_oval(event.x-5, event.y-5, event.x+5, event.y+5, \
-			fill = self.objects[self.selected_object].colour)
+		if self.selected_object != -1:
+			if self.objects[self.selected_object].circle != None:
+				self.canvas.delete(self.objects[self.selected_object].circle)
+			self.objects[self.selected_object].circle = self.canvas.create_oval(event.x-5, event.y-5, event.x+5, event.y+5, \
+				fill = self.objects[self.selected_object].colour)
+			self.objects[self.selected_object].poz_x = event.x;
+			self.objects[self.selected_object].poz_y = event.y;
 		
 
 		
