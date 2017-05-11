@@ -20,55 +20,11 @@ class Obj:
 		colours = {0 : 'Red', 1 : 'Yellow', 2 : 'Green', 3 : 'Blue'}
 		return colours[i]
 
-class Sensor:
-	"""docstring for Sensor"""
-	poz_x = 0
-	poz_y = 0
-	def __init__(self, x, y):
-		self.poz_y = y
-		self.poz_x = x
-
-	def obj_dist(s):
-		return sqrt((power((s.poz_x-self.poz_x),2)+power((s.poz_y-self.poz_y),2)))
-
-	def get_dist(objects):
-		dist = []
-		for s in objects:
-			dist.push(obj_dist(s))
-		return dist
-		
-class App:
-	"""docstring for App"""
-	ip = 0
-	port = 0
-	sensors = []
-
-	def __init__(self):
-		print("kecske")
-
-	def add_object():
-		print("kecske")
-
-	def connect():
-		print("kecske")
-
-	def send():
-		for s in sensors:
-			s.get_dist(objects)
-
-		send_to()
-	def send_to(json):
-		print("kecske")
-
-	def disconnect():
-		print("kecske")
-
-
 class Window(tk.Frame):
 	objects_button = []
 	objects = []
 	types = ('Glass', 'Key', 'Phone', 'Pen')
-	selected_object = -1;
+	selected_object = -1
 
 	app = App()
 
@@ -103,6 +59,9 @@ class Window(tk.Frame):
 
 		deselect_button = tk.Button(self.f3, text = 'Deselect', width = 10, command = self.Deselect)
 		deselect_button.pack(padx = 2, pady = 0)
+
+		send_button = tk.Button(self.f3, text = 'Send', width = 10, command = self.Send)
+		send_button.pack(padx = 2, pady = 0)
 		
 		tk.Label(f2, text = 'IoT indoor positioning system for disabled people', \
 			bg = 'dark slate gray', fg = 'white', anchor = 'w', wraplength = 100, bd = 5).grid(row = 0, column = 0)
@@ -125,7 +84,7 @@ class Window(tk.Frame):
 		if self.selected_object != -1:
 			self.objects[self.selected_object].button.config(state = 'normal');
 		self.selected_object = i
-		self.objects[i].button.config(state = 'disabled');
+		self.objects[i].button.config(state = 'disabled')
 
 	def draw_Circle(self,event):
 		if self.selected_object != -1:
@@ -135,6 +94,30 @@ class Window(tk.Frame):
 				fill = self.objects[self.selected_object].colour)
 			self.objects[self.selected_object].poz_x = event.x;
 			self.objects[self.selected_object].poz_y = event.y;
+
+	def get_distant(self, o):
+		dist = []
+		dist.append(sqrt((power(s.poz_x,2)+power(s.poz_y,2))))
+		dist.append(sqrt((power((s.poz_x-198),2)+power(s.poz_y,2))))
+		dist.append(sqrt((power(s.poz_x,2)+power((s.poz_y-224),2))))
+		return dist
+
+	def make_json(self):
+		json_data = {}
+		for i in range(0:4):
+			if objects[i].poz_x != None:
+				json_data[objects[i].name] = dist
+		
+		json_object = json.dump(json_data)
+		print(json_object)
+
+	def send(self):
+		print("Connecting to server...")
+		print("Connected")
+		print("Sending data...")
+		print("Successful")
+
+
 		
 
 		
