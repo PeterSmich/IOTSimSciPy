@@ -116,6 +116,7 @@ def main():
 			KeyPos=[]
 		else:
 			print('Keys are not in the house! ')
+			KeyCoordinates= [-1,-1]
 			
 		if('Phone'in data2):
 			phone=data2['Phone']
@@ -132,7 +133,8 @@ def main():
 			PhoneCoordinates=position(PhonePos)
 			PhonePos=[]
 		else:
-			print('Phone is not in the house! ')			
+			print('Phone is not in the house! ')
+			PhoneCoordinates= [-1,-1]		
 		
 		if('Glass'in data2):
 			glass=data2['Glass']
@@ -149,7 +151,8 @@ def main():
 			GlassCoordinates=position(GlassPos)
 			GlassPos=[]
 		else:
-			print('Glasses are not in the house! ')	
+			print('Glasses are not in the house! ')
+			GlassCoordinates= [-1,-1]
 		
 		if('Pen'in data2):
 			pen=data2['Pen']
@@ -167,6 +170,7 @@ def main():
 			PenPos=[]
 		else:
 			print('Pen is not in the house! ')
+			PenCoordinates= [-1,-1]
 		c.close() 				
 		
 		key={}
