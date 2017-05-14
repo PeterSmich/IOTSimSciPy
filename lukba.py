@@ -112,7 +112,7 @@ def main():
 			KeyPos.append(KeyIntersection3[0])
 			KeyPos.append(KeyIntersection3[1])
 			print('The coordinates of Key: ')
-			position(KeyPos)
+			KeyCoordinates=position(KeyPos)
 			KeyPos=[]
 		else:
 			print('Keys are not in the house! ')
@@ -129,7 +129,7 @@ def main():
 			PhonePos.append(PhoneIntersection3[0])
 			PhonePos.append(PhoneIntersection3[1])
 			print('The coordinates of Phone: ')
-			position(PhonePos)
+			PhoneCoordinates=position(PhonePos)
 			PhonePos=[]
 		else:
 			print('Phone is not in the house! ')			
@@ -146,7 +146,7 @@ def main():
 			GlassPos.append(GlassIntersection3[0])
 			GlassPos.append(GlassIntersection3[1])
 			print('The coordinates of Glass: ')
-			position(GlassPos)
+			GlassCoordinates=position(GlassPos)
 			GlassPos=[]
 		else:
 			print('Glasses are not in the house! ')	
@@ -163,7 +163,7 @@ def main():
 			PenPos.append(PenIntersection3[0])
 			PenPos.append(PenIntersection3[1])
 			print('The coordinates of Pen: ')
-			position(PenPos)
+			PenCoordinates=position(PenPos)
 			PenPos=[]
 		else:
 			print('Pen is not in the house! ')
