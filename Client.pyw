@@ -8,7 +8,7 @@ import sys
 class Client(tk.Frame):
     obj_change = False
     objects = {}
-    types = {'glass' : 'red', 'key' : 'green', 'phone' : 'blue', 'pen' : 'yellow'}
+    types = {'glass' : 'red', 'key' : 'yellow', 'phone' : 'green', 'pen' : 'blue'}
 
     def __init__(self, master=None):
         super().__init__(master)
@@ -96,7 +96,7 @@ class Client(tk.Frame):
         if (obj['old_val'] is not None):
             del self.objects[obj['old_val']['id']]
         if (obj['new_val'] is not None):        
-            self.objects[obj['new_val']['id']] = {'type' : obj['new_val']['type'], 'cord' : obj['new_val']['coordinates ']}
+            self.objects[obj['new_val']['id']] = {'type' : obj['new_val']['type'], 'cord' : obj['new_val']['coordinates']}
 
     def refresh_map(self, *args):
         self.changes = False
@@ -109,7 +109,8 @@ class Client(tk.Frame):
     def run(self):
         if(self.refresh_cursor()): return
         for obj in self.cursor:
-           self.objects[obj['id']] = {'type' : obj['type'], 'cord' : obj['coordinates ']}
+           print(obj)
+           self.objects[obj['id']] = {'type' : obj['type'], 'cord' : obj['coordinates']}
         self.refresh_map()
 
 
@@ -119,6 +120,7 @@ class Client(tk.Frame):
 
         self.cursor = r.db('IoT').table('objects').changes().run()        
         for object in self.cursor:
+            print('ch')
             self.changes = True
             self.refresh_object(object)
 

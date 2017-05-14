@@ -1,0 +1,21 @@
+2017-05-14T19:31:22.461808000 0.015316s notice: In recursion: removing file 'C:\\Users\\kovac\\OneDrive\\Egyetem\\MSc\\SciPy\\IOTSimSciPy\\rethinkdb_data\\tmp'
+2017-05-14T19:31:22.461808001 0.017120s warn: Trying to delete non-existent file 'C:\\Users\\kovac\\OneDrive\\Egyetem\\MSc\\SciPy\\IOTSimSciPy\\rethinkdb_data\\tmp'
+2017-05-14T19:31:22.461808002 0.019539s notice: Initializing directory C:\\Users\\kovac\\OneDrive\\Egyetem\\MSc\\SciPy\\IOTSimSciPy\\rethinkdb_data
+2017-05-14T19:31:22.461808003 0.021301s info: Creating a default database for your convenience. (This is because you ran 'rethinkdb' without 'create', 'serve', or '--join', and the directory 'C:\\Users\\kovac\\OneDrive\\Egyetem\\MSc\\SciPy\\IOTSimSciPy\\rethinkdb_data' did not already exist or is empty.)
+2017-05-14T19:31:22.461808004 0.022703s notice: Running rethinkdb 2.3.5-windows (MSC 190023506)...
+2017-05-14T19:31:22.461808005 0.022824s notice: Running on 6.2.9200 (Windows 8, Server 2012)
+2017-05-14T19:31:22.461808006 0.022896s notice: Loading data from directory C:\\Users\\kovac\\OneDrive\\Egyetem\\MSc\\SciPy\\IOTSimSciPy\\rethinkdb_data
+2017-05-14T19:31:22.664955200 0.229951s info: Automatically using cache size of 643 MB
+2017-05-14T19:31:22.680560500 0.234248s notice: Listening for intracluster connections on port 29015
+2017-05-14T19:31:22.680560501 0.236005s notice: Listening for client driver connections on port 28015
+2017-05-14T19:31:22.680560502 0.236240s notice: Listening for administrative HTTP connections on port 8080
+2017-05-14T19:31:22.680560503 0.236243s notice: Listening on cluster address: 127.0.0.1
+2017-05-14T19:31:22.680560504 0.236245s notice: Listening on driver address: 127.0.0.1
+2017-05-14T19:31:22.680560505 0.236246s notice: Listening on http address: 127.0.0.1
+2017-05-14T19:31:22.680560506 0.236248s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2017-05-14T19:31:22.680560507 0.236250s notice: Server ready, "SmichLT_tsk" 9ccff5ef-7e3f-453d-b50d-9a498c1b715f
+2017-05-14T19:31:27.649759900 5.213562s notice: Server got Control-C; shutting down...
+2017-05-14T19:31:27.665367400 5.216139s notice: Shutting down client connections...
+2017-05-14T19:31:27.665367401 5.216709s notice: All client connections closed.
+2017-05-14T19:31:27.665367402 5.216718s notice: Shutting down storage engine... (This may take a while if you had a lot of unflushed data in the writeback cache.)
+2017-05-14T19:31:27.665367403 5.221907s notice: Storage engine shut down.

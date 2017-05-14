@@ -1,7 +1,7 @@
 import math
 import socket
 import json
-#import rethinkdb as r
+import rethinkdb as r
 print("kecske")
 
 def Calculate(sensor1pos,sensor2pos,r1, r2):
@@ -112,7 +112,7 @@ def main():
 			KeyPos.append(KeyIntersection3[0])
 			KeyPos.append(KeyIntersection3[1])
 			print('The coordinates of Key: ')
-			position(KeyPos)
+			KeyCoordinates = position(KeyPos)
 			KeyPos=[]
 		else:
 			print('Keys are not in the house! ')
@@ -129,7 +129,7 @@ def main():
 			PhonePos.append(PhoneIntersection3[0])
 			PhonePos.append(PhoneIntersection3[1])
 			print('The coordinates of Phone: ')
-			position(PhonePos)
+			PhoneCoordinates=position(PhonePos)
 			PhonePos=[]
 		else:
 			print('Phone is not in the house! ')			
@@ -146,7 +146,7 @@ def main():
 			GlassPos.append(GlassIntersection3[0])
 			GlassPos.append(GlassIntersection3[1])
 			print('The coordinates of Glass: ')
-			position(GlassPos)
+			GlassCoordinates=position(GlassPos)
 			GlassPos=[]
 		else:
 			print('Glasses are not in the house! ')	
@@ -163,7 +163,7 @@ def main():
 			PenPos.append(PenIntersection3[0])
 			PenPos.append(PenIntersection3[1])
 			print('The coordinates of Pen: ')
-			position(PenPos)
+			PenCoordinates = position(PenPos)
 			PenPos=[]
 		else:
 			print('Pen is not in the house! ')
@@ -177,14 +177,21 @@ def main():
 		#rethink init: petiéből
 		#tryexception->pass
 		#	ha sikerül-->upload	
+		json_data = []
+		if('Pen'in data2) : json_data.append({'coordinates' : {'x' : int(PenCoordinates[0]), 'y' : int(PenCoordinates[1])}, 'type' : 'pen'})
+		if('Key'in data2) : json_data.append({'coordinates' : {'x' : int(KeyCoordinates[0]), 'y' : int(KeyCoordinates[1])}, 'type' : 'key'})
+		if('Glass'in data2) : json_data.append({'coordinates' : {'x' : int(GlassCoordinates[0]), 'y' : int(GlassCoordinates[1])}, 'type' : 'glass'})
+		if('Phone'in data2) : json_data.append({'coordinates' : {'x' : int(PhoneCoordinates[0]), 'y' : int(PhoneCoordinates[1])}, 'type' : 'phone'})
+		print(json_data)
+		print(json.dumps(json_data))
 		try:
-            r.connect( "localhost", 28015).repl()
-            r.db('IoT').table('objects').delete()
-            r.db('IoT').table('objects').insert()
-            r.close()
-        except r.ReqlDriverError as e:
-        	print('Unable to connect to the database')
-
+			db = r.connect( "localhost", 28015).repl()
+			print('Connected to DB')
+			r.db('IoT').table('objects').delete().run()
+			print(r.db('IoT').table('objects').insert(json_data).run())
+			db.close()
+		except r.ReqlDriverError as e:
+			print('Unable to connect to the database')
 
 if __name__ == '__main__':
 	main()
