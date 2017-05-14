@@ -140,6 +140,7 @@ def main():
 
     root.bind("<<CancelEvent>>", exit_gui)
     root.title("IOT_LPS_Client")
+    root.resizable(width=False, height=False)
     cln = Client(master=root)
     cln.mainloop()
     try:
