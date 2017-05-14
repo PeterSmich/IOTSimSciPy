@@ -89,6 +89,8 @@ class Window(tk.Frame):
 		canv.pack(fill = 'both')
 
 	def Deselect(self):
+		if self.selected_object != -1:
+			self.objects[self.selected_object].button.config(state = 'normal');
 		self.selected_object = -1;
 
 	def select_Object(self, i):	
