@@ -36,6 +36,7 @@ class Client(tk.Frame):
         self.check_Pen = tk.Checkbutton(self.f2, text = 'Pens', variable = self.types_filter['pen'], bg = self.types['pen'],\
             width = 10, command = self.set_changes, anchor = 'w')
         
+        #Chack on all boxes
         self.check_Glass.select()
         self.check_Key.select()
         self.check_Phone.select()
@@ -59,9 +60,11 @@ class Client(tk.Frame):
         t.start()
 
     def set_changes(self):
+    	#Set changes flag to True
         self.changes = True
 
     def connect(self):
+    	#Try to conect to the database
         try:
             self.db = r.connect( "localhost", 28015).repl()
         except r.ReqlDriverError as e:
@@ -70,19 +73,23 @@ class Client(tk.Frame):
         self.run()
 
     def db_exception_handler(self):
+    	#Try to reconect or close the app
         if(tk.messagebox.askretrycancel('ERROR','ERROR: Unable to connect to the database.')):
             self.connect()
         else:
             self.master.event_generate("<<CancelEvent>>", when = "tail")
             
     def draw_BP(self,canv):
+    	#Draw blue print
         canv.create_image(198, 224, image=self.bckg_img)
         canv.pack(fill = 'both')
 
     def draw_Circle(self, x, y, color = None):
+    	#Draw circle on the blue print at the defined position (x,y)
         self.canvas.create_oval(x-5, y-5, x+5, y+5, fill = color)
 
-    def refresh_cursor(self):        
+    def refresh_cursor(self): 
+    	#Refresh the query and check the connection       
         try:
             self.cursor = r.db('IoT').table('objects').run()
         except r.ReqlDriverError as e:
@@ -93,12 +100,14 @@ class Client(tk.Frame):
         return 0
 
     def refresh_object(self, obj):
+    	#Refresh the objects in the representative datas
         if (obj['old_val'] is not None):
             del self.objects[obj['old_val']['id']]
         if (obj['new_val'] is not None):        
             self.objects[obj['new_val']['id']] = {'type' : obj['new_val']['type'], 'cord' : obj['new_val']['coordinates']}
 
     def refresh_map(self, *args):
+    	#Redraw the blue print and the circles
         self.changes = False
         self.draw_BP(self.canvas)
         for i, d in self.objects.items():
@@ -107,24 +116,25 @@ class Client(tk.Frame):
 
 
     def run(self):
+    	#Run communications with the database
         if(self.refresh_cursor()): return
         for obj in self.cursor:
            print(obj)
            self.objects[obj['id']] = {'type' : obj['type'], 'cord' : obj['coordinates']}
         self.refresh_map()
 
-
+        #Launch notifyer thread
         t = threading.Thread(target = self.refresh_notifyer)
         t.setDaemon(True)
         t.start()
 
         self.cursor = r.db('IoT').table('objects').changes().run()        
         for object in self.cursor:
-            print('ch')
             self.changes = True
             self.refresh_object(object)
 
     def refresh_notifyer(self):
+    	#Drop a RefreshMap event in every 0.5 second when the changes flag is true
         while (True):
             try:
                 time.sleep(0.5)
