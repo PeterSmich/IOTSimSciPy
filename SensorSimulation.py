@@ -143,15 +143,18 @@ class Window(tk.Frame):
 		host = 'localhost'
 		port = 12345
 		print("Connecting to server...")
-		try:
-			s.connect((host, port))
-		except socket.timeout:
-			print("Connection timed out, server not responding")
-		else:
-			print("Successfully connected")
-			print(s.recv(1024).decode())
-			data = self.make_json()
-			s.sendto(data.encode(),(host, port))
+		while(True):
+			try:
+				s.connect((host, port))
+			except:
+				if(not tk.messagebox.askretrycancel('ERROR','ERROR: Unable to connect to the server.')):
+					break
+			else:
+				print("Successfully connected")
+				print(s.recv(1024).decode())
+				data = self.make_json()
+				s.sendto(data.encode(),(host, port))
+				break
 		s.close()
 
 
