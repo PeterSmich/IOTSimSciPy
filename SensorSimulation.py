@@ -106,8 +106,6 @@ class Window(tk.Frame):
 				fill = self.objects[self.selected_object].colour)
 			self.objects[self.selected_object].poz_x = event.x;
 			self.objects[self.selected_object].poz_y = event.y;
-			print(event.x)
-			print(event.y)
 
 	def del_sel(self):
 		if self.selected_object != -1:
