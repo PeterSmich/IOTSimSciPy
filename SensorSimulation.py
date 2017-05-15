@@ -141,7 +141,8 @@ class Window(tk.Frame):
 	def send(self):
 		socket.setdefaulttimeout(3)
 		s = socket.socket()
-		host = '192.168.0.101'
+		#host = '192.168.0.101'
+		host = 'localhost'
 		port = 12345
 		print("Connecting to server...")
 		try:
