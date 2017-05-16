@@ -4,7 +4,7 @@ Scientific Python group project
 
 ## Important files
 
-Markup : * Server.py
+* Server.py
          * SensorSimulation.pywő
          * Client.pyw
 
